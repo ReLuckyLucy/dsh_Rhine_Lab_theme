@@ -1,0 +1,109 @@
+/* Rhine Lab decoration sheet, armed by the `data-rhine-lab-theme` attribute
+   that the plugin pins on <html> and <body> while the skin is enabled.
+   Colors come from the token override layer; this sheet adds only the
+   holographic texture layers and motion, with zero class selectors so it
+   cannot collide with hashed component styles. Everything is
+   pointer-events: none and reduced-motion aware. */
+
+/* ── static holographic texture: hex lattice + scanlines ─────────────────── */
+body[data-rhine-lab-theme]::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='98' viewBox='0 0 56 98'%3E%3Cpath d='M28 0 56 16v33L28 65 0 49V16Z' fill='none' stroke='%2374bee8' stroke-opacity='0.10'/%3E%3Cpath d='M28 33l28 16v33L28 98 0 82V49Z' fill='none' stroke='%2374bee8' stroke-opacity='0.06'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(
+      0deg,
+      rgba(74, 190, 232, 0.05) 0px,
+      rgba(74, 190, 232, 0.05) 1px,
+      rgba(0, 0, 0, 0) 1px,
+      rgba(0, 0, 0, 0) 3px
+    );
+  opacity: 0.5;
+}
+
+/* ── slow lab-scanner sweep across the frame ─────────────────────────────── */
+html[data-rhine-lab-theme]::before {
+  content: '';
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: -25%;
+  height: 22%;
+  z-index: 2147483001;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(74, 190, 232, 0) 0%,
+    rgba(74, 190, 232, 0.05) 40%,
+    rgba(74, 190, 232, 0.11) 50%,
+    rgba(74, 190, 232, 0.05) 60%,
+    rgba(74, 190, 232, 0) 100%
+  );
+  animation: rhine-scan 11s linear infinite;
+}
+
+@keyframes rhine-scan {
+  from { transform: translateY(-120%); }
+  to { transform: translateY(600%); }
+}
+
+/* ── edge vignette: a sealed-lab depth cue ───────────────────────────────── */
+html[data-rhine-lab-theme]::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2147482999;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 90% at 50% 40%,
+    rgba(0, 0, 0, 0) 58%,
+    rgba(8, 22, 30, 0.12) 100%
+  );
+}
+
+/* ── one-shot boot sweep when the skin first arms ────────────────────────── */
+body[data-rhine-lab-theme]::after {
+  content: '';
+  position: fixed;
+  inset: -40% 0;
+  z-index: 2147483002;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 42%,
+    rgba(110, 208, 244, 0.14) 46%,
+    rgba(74, 190, 232, 0.26) 50%,
+    rgba(110, 208, 244, 0.14) 54%,
+    rgba(0, 0, 0, 0) 58%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  animation: rhine-boot-sweep 0.85s cubic-bezier(0.3, 0, 0.2, 1) 1 both;
+}
+
+@keyframes rhine-boot-sweep {
+  from { transform: translateX(-80%); }
+  to { transform: translateX(80%); }
+}
+
+/* ── reading and focus chrome in lab cyan ────────────────────────────────── */
+body[data-rhine-lab-theme] ::selection {
+  background: rgba(74, 190, 232, 0.35);
+  color: rgb(13, 42, 58);
+}
+
+body[data-rhine-lab-theme] :focus-visible {
+  outline: 2px solid rgba(74, 190, 232, 0.8);
+  outline-offset: 1px;
+}
+
+/* ── motion sensitivity ──────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html[data-rhine-lab-theme]::before,
+  body[data-rhine-lab-theme]::after {
+    display: none;
+  }
+}

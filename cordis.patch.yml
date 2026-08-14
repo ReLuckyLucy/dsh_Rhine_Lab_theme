@@ -1,0 +1,17 @@
+# dsh-theme-rhine-lab bundle layer. Composition order is dsh-base →
+# dsh-web-app → this bundle, so this layer may override the shipped rows.
+# The inserted row is a dual-face dsh.client entry: its node half registers
+# the durable preference namespace (ui-theme-rhine-lab) with the settings
+# service, and its browser half applies the Rhine Lab skin.
+#
+# The first entry defensively disables the identical in-tree row
+# (`ui-theme-rhine-lab`) that ships with source checkouts of the harness at
+# 0.1.0-rc.5 — on a stock install that id does not exist and this entry is a
+# harmless no-op warning. The settings namespace stays the same either way,
+# so a preference written under one row survives a switch to the other.
+- id: ui-theme-rhine-lab
+  disabled: true
+
+- insert:
+    - id: rhine-lab-theme
+      name: dsh-theme-rhine-lab

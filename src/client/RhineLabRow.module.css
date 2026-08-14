@@ -1,0 +1,97 @@
+/* The Rhine Lab skin row: a hex seal that lights up while the skin is on,
+   plus a two-button toggle. Consumes only --dsw-* tokens so it reads well on
+   both the stock palettes and the skin itself. */
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.badge {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  background: var(--dsw-alias-interactive-bg-hover);
+  border: 1px solid var(--dsw-alias-border-l3);
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  transition: background var(--ds-transition-duration) var(--ds-ease-in-out);
+}
+
+.badge[data-on] {
+  background: var(--dsw-alias-brand-primary);
+  border-color: transparent;
+  box-shadow:
+    0 0 0 2px var(--dsw-alias-bg-layer-1),
+    0 0 10px 1px rgba(74, 190, 232, 0.55);
+  animation: rhine-seal-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes rhine-seal-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.72; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge[data-on] {
+    animation: none;
+  }
+}
+
+.copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title {
+  color: var(--dsw-alias-label-primary);
+  font: var(--dsw-font-base-strong-16);
+}
+
+.desc {
+  color: var(--dsw-alias-label-tertiary);
+  font: var(--dsw-font-xs-13);
+}
+
+.seg {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.segBtn {
+  padding: 5px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  background: var(--dsw-alias-button-elevated-fill);
+  color: var(--dsw-alias-label-secondary);
+  font: var(--dsw-font-s-strong-14);
+  cursor: pointer;
+  transition:
+    background var(--ds-transition-duration-fast) var(--ds-ease-in-out),
+    color var(--ds-transition-duration-fast) var(--ds-ease-in-out),
+    border-color var(--ds-transition-duration-fast) var(--ds-ease-in-out);
+}
+
+.segBtn:hover {
+  background: var(--dsw-alias-button-floating-hover);
+  color: var(--dsw-alias-label-primary);
+}
+
+.segOn {
+  background: var(--dsw-alias-brand-primary);
+  border-color: transparent;
+  color: var(--dsw-alias-label-primary-foreground);
+}
+
+.segOn:hover {
+  background: var(--dsw-alias-button-primary-hover);
+  color: var(--dsw-alias-label-primary-foreground);
+}
