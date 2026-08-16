@@ -1,0 +1,105 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483003;
+  display: none;
+  pointer-events: none;
+  color: rgba(80, 185, 225, 0.78);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+:global(body[data-rhine-lab-theme]) .root {
+  display: block;
+}
+
+:global(body[data-ds-dark-theme][data-rhine-lab-theme]) .root {
+  color: rgba(142, 221, 248, 0.78);
+}
+
+.plate {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 9px;
+  padding: 7px 10px;
+  border-left: 1px solid currentColor;
+  background: linear-gradient(90deg, rgba(178, 237, 255, 0.13), transparent);
+  animation: rhine-hud-validation 900ms cubic-bezier(0.2, 0, 0.2, 1) both;
+}
+
+.mark {
+  grid-row: span 2;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  padding-right: 8px;
+  border-right: 1px solid currentColor;
+  font-size: 13px;
+}
+
+.mark i,
+.validation i {
+  font-style: normal;
+}
+
+.company { font-size: 10px; }
+.system { opacity: 0.72; }
+
+.access {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+  opacity: 0.8;
+  animation: rhine-hud-validation 900ms 90ms cubic-bezier(0.2, 0, 0.2, 1) both;
+}
+
+.edge {
+  position: absolute;
+  top: 50%;
+  right: -66px;
+  transform: rotate(90deg);
+  transform-origin: center;
+  opacity: 0.48;
+}
+
+.validation {
+  position: absolute;
+  right: 22px;
+  top: 22px;
+  display: flex;
+  gap: 4px;
+  animation: rhine-hud-validation 900ms 180ms cubic-bezier(0.2, 0, 0.2, 1) both;
+}
+
+.validation i {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border: 1px solid currentColor;
+}
+
+.validation i:nth-child(2) { background: currentColor; }
+
+@keyframes rhine-hud-validation {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plate,
+  .access,
+  .validation {
+    animation: none;
+  }
+}

@@ -16,8 +16,11 @@ import type {} from '@deepseek-ai/dsh-client-ui-theme/client'
 import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
 import type {} from '@deepseek-ai/dsh-client-locale/client'
+// Type-only: pulls the layout plugin's slot declarations.
+import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
 import type { RhineLabRowInjected } from './RhineLabRow.tsx'
 import { RhineLabRow } from './RhineLabRow.tsx'
+import { registerRhineLabHud } from './hud-registration.ts'
 import { createRhineLabRowStore } from './settings-store.ts'
 import { en, zh, type RhineKey } from './locales.ts'
 import {
@@ -57,6 +60,8 @@ export const inject = ['theme', 'settingsScope', 'slots', 'locale']
  * @param ctx - client cordis context.
  */
 export function apply(ctx: ClientContext): void {
+  ctx.effect(() => registerRhineLabHud(ctx.slots), 'rhine-lab: shell HUD')
+
   const host = ctx.settingsScope.bind<RhineSettings>({ namespace: RHINE_SETTINGS_NAMESPACE })
   const projection = createThemeProjector(
     () => ctx.theme.overrideTokens(OVERRIDE_SOURCE, RHINE_TOKENS),
