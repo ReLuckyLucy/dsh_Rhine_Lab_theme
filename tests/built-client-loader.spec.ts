@@ -56,8 +56,12 @@ describe('built Rhine Lab client loader', () => {
     expect(client.apply).toEqual(expect.any(Function))
   })
 
-  it('injects responsive reconstruction rules without replacing Harness columns', () => {
+  it('injects reconstruction rules without replacing Harness columns at any viewport', () => {
     expect(builtStyleRules.some(rule => rule.selectorText.includes('[data-chat-flow-kind]'))).toBe(true)
+    expect(builtStyleRules.some(rule =>
+      rule.selectorText.includes(':has(>[data-shell-overlay])')
+      && rule.style.getPropertyValue('grid-template-columns') !== '',
+    )).toBe(false)
     const responsive = builtMediaRules.find(rule =>
       ['(max-width:900px)', '(width<=900px)']
         .includes(rule.conditionText.replace(/\s/g, '')),

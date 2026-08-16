@@ -72,10 +72,12 @@ describe('compiled Rhine Lab reconstruction stylesheet', () => {
 
   it('compiles the square archive frame and command deck treatments', () => {
     const frame = rulesTargeting(':has(>[data-shell-overlay])')
-      .find(rule => rule.style.getPropertyValue('grid-template-columns') !== '')
+      .find(rule => rule.style.getPropertyValue('display') === 'grid')
     expect(frame?.style.getPropertyValue('display')).toBe('grid')
-    expect(frame?.style.getPropertyValue('grid-template-columns')).toContain('minmax')
     expect(frame?.style.getPropertyValue('border-radius')).toMatch(/^0(?:px)?$/)
+    expect(rulesTargeting(':has(>[data-shell-overlay])').some(rule =>
+      rule.style.getPropertyValue('grid-template-columns') !== '',
+    )).toBe(false)
 
     const composer = rulesTargeting('[data-composer-card]')
       .find(rule => rule.style.getPropertyValue('box-shadow') !== '')

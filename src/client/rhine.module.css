@@ -23,7 +23,6 @@ body[data-rhine-lab-theme] :has(> [data-shell-overlay]) {
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-template-columns: minmax(56px, 238px) minmax(0, 1fr) minmax(220px, 320px);
   min-height: 100dvh;
   border: 0;
   border-radius: 0;
