@@ -24,7 +24,8 @@ import {
   DEFAULT_ENABLED, RHINE_ENABLED_FIELD, RHINE_SETTINGS_NAMESPACE,
   type RhineSettings,
 } from '../theme-settings.ts'
-import { createThemeProjector, SKIN_ATTRIBUTE } from './theme-projector.ts'
+import { createThemeProjector } from './theme-projector.ts'
+export { SKIN_ATTRIBUTE } from './theme-projector.ts'
 import { RHINE_TOKENS } from './palette.ts'
 import './rhine.module.css'
 

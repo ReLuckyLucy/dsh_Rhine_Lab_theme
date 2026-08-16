@@ -3,6 +3,7 @@ import {
   createThemeProjector,
   SKIN_ATTRIBUTE,
 } from '../src/client/theme-projector.ts'
+import { SKIN_ATTRIBUTE as CLIENT_SKIN_ATTRIBUTE } from '../src/client/index.ts'
 
 describe('Rhine Lab theme projector', () => {
   afterEach(() => {
@@ -35,5 +36,9 @@ describe('Rhine Lab theme projector', () => {
     projection.dispose()
     projection.dispose()
     expect(retract).toHaveBeenCalledTimes(1)
+  })
+
+  it('exports the skin attribute from the public client entry', () => {
+    expect(CLIENT_SKIN_ATTRIBUTE).toBe('data-rhine-lab-theme')
   })
 })
