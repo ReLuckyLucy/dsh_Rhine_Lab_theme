@@ -122,6 +122,20 @@ describe('built Rhine Lab client loader', () => {
   })
 })
 
+it('keeps the department index label in a pointer-neutral safe sidebar inset', () => {
+  const departmentIndex = builtStyleRules.find(rule =>
+    rule.style.getPropertyValue('content').includes('DEPARTMENT INDEX')
+    && rule.selectorText.endsWith(':before'),
+  )
+
+  expect(departmentIndex).toBeDefined()
+  expect(departmentIndex?.style.getPropertyValue('position')).toBe('absolute')
+  expect(departmentIndex?.style.getPropertyValue('inset-block-start')).toBe('114px')
+  expect(departmentIndex?.style.getPropertyValue('inset-inline-start')).toBe('16px')
+  expect(departmentIndex?.style.getPropertyValue('pointer-events')).toBe('none')
+  expect(departmentIndex?.style.getPropertyValue('white-space')).toBe('nowrap')
+})
+
   it('keeps the fixed HUD plate outside Harness identity at wide and responsive widths', () => {
     const root = builtHudStyleRules.find(rule =>
       rule.style.getPropertyValue('position') === 'fixed'

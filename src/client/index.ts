@@ -3,9 +3,9 @@
  * onto the theme service and the document. While enabled, a `theme.overrideTokens`
  * layer restyles both palettes (the existing Appearance row keeps selecting
  * light/dark/system) and `data-rhine-lab-theme` is pinned on html and body,
- * which arms the decoration stylesheet (hex lattice, scan sweeps, boot
- * sweep). The plugin also registers the feature-owned skin row into the
- * General settings section. The Host settings scope loads and stores the
+ * which arms the archive-terminal stylesheet and restrained shell HUD. The
+ * plugin also registers the feature-owned skin row into the General settings
+ * section. The Host settings scope loads and stores the
  * preference in the user-settings document.
  */
 import type { BoundActions } from '@deepseek-ai/dsh-client-ui-slots'

@@ -57,14 +57,17 @@ body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :first-child:not([data
 
 body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :first-child:not([data-shell-overlay])::before {
   content: "DEPARTMENT INDEX";
-  display: block;
-  padding: 11px 14px;
-  border-block-end: 1px solid var(--dsw-alias-border-l3);
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 114px;
+  inset-inline-start: 16px;
   color: var(--dsw-alias-label-tertiary);
   font: 600 9px/1.2 "Cascadia Mono", Consolas, monospace;
   letter-spacing: 0.16em;
-}
+  white-space: nowrap;
+  pointer-events: none;
 
+}
 body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :first-child:not([data-shell-overlay]) [aria-current="page"],
 body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :first-child:not([data-shell-overlay]) [data-active="true"] {
   border-radius: 0;

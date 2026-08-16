@@ -37,8 +37,8 @@ dsh plugin --profile web add ./dsh-theme-rhine-lab-0.2.0.tgz
 从源码安装前先构建：
 
 ```sh
-git clone https://github.com/YOU/dsh-theme-rhine-lab.git
-cd dsh-theme-rhine-lab
+git clone https://github.com/ReLuckyLucy/dsh_Rhine_Lab_themo.git
+cd dsh_Rhine_Lab_themo
 pnpm install
 pnpm build
 dsh plugin --profile web add .
