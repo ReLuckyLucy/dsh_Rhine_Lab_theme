@@ -331,6 +331,12 @@ body[data-ds-dark-theme][data-rhine-lab-theme] [data-queue-dock] {
   }
 }
 
+@media (max-width: 1024px) {
+  body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :first-child:not([data-shell-overlay])::before {
+    display: none;
+  }
+}
+
 @media (max-width: 900px) {
   body[data-rhine-lab-theme] :has(> [data-shell-overlay])::before {
     content: none;

@@ -136,6 +136,22 @@ it('keeps the department index label in a pointer-neutral safe sidebar inset', (
   expect(departmentIndex?.style.getPropertyValue('white-space')).toBe('nowrap')
 })
 
+it('hides the built department index label after Harness collapses the sidebar rail', () => {
+  const responsive = builtMediaRules.find(rule =>
+    ['(max-width:1024px)', '(width<=1024px)']
+      .includes(rule.conditionText.replace(/\s/g, '')),
+  )
+  const responsiveRules = responsive === undefined
+    ? []
+    : flattenRules(responsive.cssRules).filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
+  const departmentIndex = responsiveRules.find(rule =>
+    rule.selectorText.includes(':has(>[data-shell-overlay])')
+    && rule.selectorText.includes(':first-child:not([data-shell-overlay]):before'),
+  )
+
+  expect(departmentIndex?.style.getPropertyValue('display')).toBe('none')
+})
+
   it('keeps the fixed HUD plate outside Harness identity at wide and responsive widths', () => {
     const root = builtHudStyleRules.find(rule =>
       rule.style.getPropertyValue('position') === 'fixed'

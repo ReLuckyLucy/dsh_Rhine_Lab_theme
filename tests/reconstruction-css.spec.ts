@@ -116,6 +116,17 @@ describe('compiled Rhine Lab reconstruction stylesheet', () => {
     )).toBe(false)
   })
 
+  it('hides the nonessential department index after Harness collapses the sidebar rail', () => {
+    const narrowRules = flattenRules(mediaAtMaxWidth(1024).cssRules)
+      .filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
+    const departmentIndex = narrowRules.find(rule =>
+      rule.selectorText.includes(':has(>[data-shell-overlay])')
+      && rule.selectorText.includes(':first-child:not([data-shell-overlay]):before'),
+    )
+
+    expect(departmentIndex?.style.getPropertyValue('display')).toBe('none')
+  })
+
   it('reduces only file-header and record gutters at 640px', () => {
     const mobileRules = flattenRules(mediaAtMaxWidth(640).cssRules)
       .filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
