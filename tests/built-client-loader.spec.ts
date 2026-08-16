@@ -36,6 +36,13 @@ if (reconstructionSheet === null || reconstructionSheet === undefined) {
   throw new Error('Built client did not inject the reconstruction stylesheet')
 }
 
+
+const settingsStyle = Array.from(dom.window.document.querySelectorAll('style'))
+  .find(tag => tag.dataset.pluginCss?.endsWith('/RhineLabRow.module.css'))
+const settingsSheet = settingsStyle?.sheet
+if (settingsSheet === null || settingsSheet === undefined) {
+  throw new Error('Built client did not inject the settings-row stylesheet')
+}
 function flattenRules(rules: CSSRuleList): CSSRule[] {
   return Array.from(rules).flatMap(rule => {
     if ('cssRules' in rule) return [rule, ...flattenRules(rule.cssRules as CSSRuleList)]
@@ -47,6 +54,8 @@ const builtRules = flattenRules(reconstructionSheet.cssRules)
 const builtStyleRules = builtRules.filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
 const builtMediaRules = builtRules.filter((rule): rule is CSSMediaRule => 'conditionText' in rule)
 
+const builtSettingsRules = flattenRules(settingsSheet.cssRules)
+  .filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
 afterAll(() => dom.window.close())
 
 describe('built Rhine Lab client loader', () => {
@@ -91,3 +100,21 @@ describe('built Rhine Lab client loader', () => {
     )).toBe(false)
   })
 })
+
+  it('injects square research-orange settings controls', () => {
+    const segment = builtSettingsRules.find(rule =>
+      rule.style.getPropertyValue('padding') === '5px 14px',
+    )
+    const selectedSegment = builtSettingsRules.find(rule =>
+      rule.style.getPropertyValue('background') === 'var(--dsw-alias-brand-primary)'
+      && rule.style.getPropertyValue('color') === 'var(--dsw-alias-label-primary-foreground)',
+    )
+    const enabledSeal = builtSettingsRules.find(rule =>
+      rule.selectorText.includes('[data-on]')
+      && rule.style.getPropertyValue('animation') !== '',
+    )
+
+    expect(segment?.style.getPropertyValue('border-radius')).toMatch(/^0(?:px)?$/)
+    expect(selectedSegment).toBeDefined()
+    expect(enabledSeal?.style.getPropertyValue('box-shadow')).toContain('var(--dsw-alias-brand-primary)')
+  })

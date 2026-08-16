@@ -1,7 +1,7 @@
 {
   "name": "dsh-theme-rhine-lab",
-  "version": "0.1.0",
-  "description": "Arknights Rhine Lab (莱茵生命) skin for the DeepSeek Harness Web GUI: a token override layer plus holographic decorations, toggled by a General-settings row",
+  "version": "0.2.0",
+  "description": "Arknights Rhine Lab archive-terminal reconstruction for the DeepSeek Harness Web GUI, with reversible deep styling and restrained institutional HUD",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -16,7 +16,8 @@
     "cordis.patch.yml",
     "README.md",
     "README.zh.md",
-    "LICENSE"
+    "LICENSE",
+    "screenshots"
   ],
   "scripts": {
     "build": "tsdown",

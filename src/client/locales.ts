@@ -2,9 +2,9 @@
 
 /** Simplified Chinese dictionary (the key-set source of truth). */
 export const zh = {
-  'rhine.title': '莱茵生命界面',
-  'rhine.desc': '明日方舟莱茵生命实验室风格皮肤',
-  'rhine.on': '启用',
+  'rhine.title': '莱茵生命深度界面',
+  'rhine.desc': '将 Harness 重组为莱茵生命内部研究终端',
+  'rhine.on': '授权',
   'rhine.off': '停用',
 } satisfies Record<string, string>
 
@@ -13,8 +13,8 @@ export type RhineKey = keyof typeof zh
 
 /** English dictionary, checked complete against the zh key set. */
 export const en = {
-  'rhine.title': 'Rhine Lab UI',
-  'rhine.desc': 'Arknights Rhine Lab skin',
-  'rhine.on': 'On',
-  'rhine.off': 'Off',
+  'rhine.title': 'Rhine Lab Reconstruction',
+  'rhine.desc': 'Recompose Harness as a Rhine Lab internal research terminal',
+  'rhine.on': 'Authorize',
+  'rhine.off': 'Disable',
 } satisfies Record<RhineKey, string>
