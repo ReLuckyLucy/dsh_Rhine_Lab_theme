@@ -4,8 +4,8 @@
 
 > 为 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）网页版重组《明日方舟》莱茵生命界面：以档案终端为核心视觉，并加入克制的机构 HUD 标识。
 
-![浅色总部档案](screenshots/light.png)
-![深色夜间行动](screenshots/dark.png)
+![莱茵生命浅色总部档案模式](screenshots/light.png)
+![莱茵生命深色夜间行动模式](screenshots/dark.png)
 
 ## 视觉系统
 

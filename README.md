@@ -4,8 +4,8 @@ English | [中文](README.zh.md)
 
 > An [Arknights](https://www.arknights.global/) Rhine Lab reconstruction for the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web GUI: an archive-terminal visual system with restrained institutional HUD branding.
 
-![Light headquarters archive](screenshots/light.png)
-![Dark night operations](screenshots/dark.png)
+![Rhine Lab light archive mode](screenshots/light.png)
+![Rhine Lab dark night-operations mode](screenshots/dark.png)
 
 ## Visual system
 
