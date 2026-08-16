@@ -260,6 +260,7 @@ body[data-rhine-lab-theme] [data-input-scroll] {
 }
 
 body[data-rhine-lab-theme] [data-composer-card] button[type="submit"],
+body[data-rhine-lab-theme] [data-composer-card] button[aria-label="发送消息"],
 body[data-rhine-lab-theme] [data-composer-card] button[aria-label*="send" i] {
   border: 1px solid var(--dsw-alias-label-primary);
   border-radius: 0;

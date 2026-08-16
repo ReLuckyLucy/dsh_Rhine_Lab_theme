@@ -99,6 +99,15 @@ describe('built Rhine Lab client loader', () => {
       && rule.style.getPropertyValue('position') === 'fixed',
     )).toBe(false)
   })
+
+  it('styles the Chinese send control as a research-orange primary action', () => {
+    const chineseSend = builtStyleRules.find(rule =>
+      rule.selectorText.includes('aria-label') && rule.selectorText.includes('发送消息')
+      && rule.style.getPropertyValue('background') === 'var(--dsw-alias-brand-primary)',
+    )
+
+    expect(chineseSend).toBeDefined()
+  })
 })
 
   it('injects square research-orange settings controls', () => {
