@@ -64,7 +64,9 @@ function cssModulesInline(): NonNullable<UserConfig['plugins']>[number] {
         minify: true,
       })
       const classMap: Record<string, string> = {}
-      for (const [local, exp] of Object.entries(cssExports ?? {})) classMap[local] = exp.name
+      const entries = Object.entries(cssExports ?? {})
+        .sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0)
+      for (const [local, exp] of entries) classMap[local] = exp.name
       // One <style data-plugin> per module file; idempotent under re-evaluation.
       return [
         `const css = ${JSON.stringify(code.toString())};`,

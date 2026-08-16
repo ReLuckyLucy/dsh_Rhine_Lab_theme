@@ -1,0 +1,158 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483003;
+  display: none;
+  pointer-events: none;
+  color: rgba(9, 11, 13, 0.62);
+  font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+:global(body[data-rhine-lab-theme]) .root {
+  display: block;
+}
+
+:global(body[data-ds-dark-theme][data-rhine-lab-theme]) .root {
+  color: rgba(231, 230, 223, 0.66);
+}
+
+.plate {
+  position: absolute;
+  top: 14px;
+  left: 560px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 9px;
+  padding: 7px 10px;
+  border-top: 1px solid currentColor;
+  border-left: 4px solid rgb(242, 122, 34);
+  background: linear-gradient(90deg, rgba(242, 122, 34, 0.12), transparent);
+  animation: rhine-hud-validation 420ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+.mark {
+  grid-row: span 2;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  padding-right: 8px;
+  border-right: 1px solid rgb(242, 122, 34);
+  color: rgb(157, 67, 10);
+  font-size: 13px;
+}
+
+:global(body[data-ds-dark-theme][data-rhine-lab-theme]) .mark {
+  color: rgb(255, 135, 50);
+}
+
+.mark i,
+.validation i {
+  font-style: normal;
+}
+
+.company {
+  font-size: 10px;
+}
+
+.system {
+  opacity: 0.72;
+}
+
+.access {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+  padding-right: 8px;
+  border-right: 3px solid rgb(43, 159, 189);
+  color: rgb(20, 103, 124);
+  opacity: 0.82;
+  animation: rhine-hud-validation 420ms 60ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+:global(body[data-ds-dark-theme][data-rhine-lab-theme]) .access {
+  color: rgb(91, 194, 216);
+}
+
+.edge {
+  position: absolute;
+  top: 50%;
+  right: -72px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(90deg);
+  transform-origin: center;
+  opacity: 0.44;
+}
+
+.validation {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  display: flex;
+  gap: 4px;
+  color: rgb(242, 122, 34);
+  animation: rhine-hud-validation 420ms 100ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+:global(body[data-ds-dark-theme][data-rhine-lab-theme]) .validation {
+  color: rgb(255, 135, 50);
+}
+
+.validation i {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border: 1px solid currentColor;
+}
+
+.validation i:nth-child(2) {
+  background: currentColor;
+}
+
+@keyframes rhine-hud-validation {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1100px) {
+  .plate {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .edge,
+  .access {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .validation {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plate,
+  .access,
+  .validation {
+    animation: none;
+  }
+}

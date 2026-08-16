@@ -1,7 +1,7 @@
 {
   "name": "dsh-theme-rhine-lab",
-  "version": "0.1.0",
-  "description": "Arknights Rhine Lab (莱茵生命) skin for the DeepSeek Harness Web GUI: a token override layer plus holographic decorations, toggled by a General-settings row",
+  "version": "0.2.0",
+  "description": "Arknights Rhine Lab archive-terminal reconstruction for the DeepSeek Harness Web GUI, with reversible deep styling and restrained institutional HUD",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -16,10 +16,13 @@
     "cordis.patch.yml",
     "README.md",
     "README.zh.md",
-    "LICENSE"
+    "LICENSE",
+    "screenshots"
   ],
   "scripts": {
     "build": "tsdown",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepare": "tsdown"
   },
   "keywords": [
@@ -43,7 +46,9 @@
         "@deepseek-ai/dsh-client-runtime",
         "@deepseek-ai/dsh-client-ui-theme",
         "@deepseek-ai/dsh-client-ui-settings",
-        "@deepseek-ai/dsh-client-locale"
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-ui-layout"
       ]
     }
   },
@@ -52,9 +57,17 @@
     "@deepseek-ai/schemastery": ">=3.18.1 <4"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.3.0",
     "@deepseek-ai/dsh-settings": ">=0.0.1-rc.1 <1",
     "@deepseek-ai/schemastery": ">=3.18.1 <4",
+    "@types/react": "~18.3.1",
+    "@types/react-dom": "^18.3.7",
+    "jsdom": "^29.1.1",
     "lightningcss": "^1.32.0",
-    "tsdown": "^0.22.2"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsdown": "^0.22.2",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
   }
 }

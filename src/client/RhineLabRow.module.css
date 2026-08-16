@@ -1,6 +1,6 @@
-/* The Rhine Lab skin row: a hex seal that lights up while the skin is on,
-   plus a two-button toggle. Consumes only --dsw-* tokens so it reads well on
-   both the stock palettes and the skin itself. */
+/* The Rhine Lab skin row: a research-orange authorization seal and square
+   toggle. It consumes only --dsw-* tokens, preserving the host palettes and
+   the existing durable settings behavior. */
 
 .group {
   display: flex;
@@ -29,7 +29,7 @@
   border-color: transparent;
   box-shadow:
     0 0 0 2px var(--dsw-alias-bg-layer-1),
-    0 0 10px 1px rgba(74, 190, 232, 0.55);
+    0 0 10px 1px color-mix(in srgb, var(--dsw-alias-brand-primary) 55%, transparent);
   animation: rhine-seal-pulse 2.4s ease-in-out infinite;
 }
 
@@ -68,7 +68,7 @@
 
 .segBtn {
   padding: 5px 14px;
-  border-radius: 6px;
+  border-radius: 0;
   border: 1px solid var(--dsw-alias-border-l2);
   background: var(--dsw-alias-button-elevated-fill);
   color: var(--dsw-alias-label-secondary);

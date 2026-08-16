@@ -597,6 +597,7 @@ Both READMEs must document:
 - reduced motion and responsive behavior;
 - source/tarball installation commands;
 - real screenshot links at `screenshots/light.png` and `screenshots/dark.png` after Task 5.
+- source installation using `git clone https://github.com/ReLuckyLucy/dsh_Rhine_Lab_themo.git` followed by `cd dsh_Rhine_Lab_themo`;
 
 Remove every statement about continuous scanning, holographic hex lattices, or the former cyan primary color.
 
