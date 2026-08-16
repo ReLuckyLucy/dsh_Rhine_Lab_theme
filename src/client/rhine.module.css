@@ -1,109 +1,391 @@
-/* Rhine Lab decoration sheet, armed by the `data-rhine-lab-theme` attribute
-   that the plugin pins on <html> and <body> while the skin is enabled.
-   Colors come from the token override layer; this sheet adds only the
-   holographic texture layers and motion, with zero class selectors so it
-   cannot collide with hashed component styles. Everything is
-   pointer-events: none and reduced-motion aware. */
+/* Rhine Lab archive-terminal reconstruction.
+   The Harness owns every element below. This sheet only projects scoped
+   presentation through stable data attributes while the skin is enabled. */
 
-/* ── static holographic texture: hex lattice + scanlines ─────────────────── */
-body[data-rhine-lab-theme]::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 2147483000;
-  pointer-events: none;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='98' viewBox='0 0 56 98'%3E%3Cpath d='M28 0 56 16v33L28 65 0 49V16Z' fill='none' stroke='%2374bee8' stroke-opacity='0.10'/%3E%3Cpath d='M28 33l28 16v33L28 98 0 82V49Z' fill='none' stroke='%2374bee8' stroke-opacity='0.06'/%3E%3C/svg%3E"),
-    repeating-linear-gradient(
-      0deg,
-      rgba(74, 190, 232, 0.05) 0px,
-      rgba(74, 190, 232, 0.05) 1px,
-      rgba(0, 0, 0, 0) 1px,
-      rgba(0, 0, 0, 0) 3px
-    );
-  opacity: 0.5;
+body[data-rhine-lab-theme] {
+  background: var(--dsw-alias-bg-base);
+  color: var(--dsw-alias-label-primary);
+  font-family: Bahnschrift, "Arial Narrow", "Noto Sans SC", sans-serif;
 }
 
-/* ── slow lab-scanner sweep across the frame ─────────────────────────────── */
-html[data-rhine-lab-theme]::before {
-  content: '';
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: -25%;
-  height: 22%;
-  z-index: 2147483001;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(74, 190, 232, 0) 0%,
-    rgba(74, 190, 232, 0.05) 40%,
-    rgba(74, 190, 232, 0.11) 50%,
-    rgba(74, 190, 232, 0.05) 60%,
-    rgba(74, 190, 232, 0) 100%
-  );
-  animation: rhine-scan 11s linear infinite;
-}
-
-@keyframes rhine-scan {
-  from { transform: translateY(-120%); }
-  to { transform: translateY(600%); }
-}
-
-/* ── edge vignette: a sealed-lab depth cue ───────────────────────────────── */
-html[data-rhine-lab-theme]::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 2147482999;
-  pointer-events: none;
-  background: radial-gradient(
-    120% 90% at 50% 40%,
-    rgba(0, 0, 0, 0) 58%,
-    rgba(8, 22, 30, 0.12) 100%
-  );
-}
-
-/* ── one-shot boot sweep when the skin first arms ────────────────────────── */
-body[data-rhine-lab-theme]::after {
-  content: '';
-  position: fixed;
-  inset: -40% 0;
-  z-index: 2147483002;
-  pointer-events: none;
-  background: linear-gradient(
-    115deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0) 42%,
-    rgba(110, 208, 244, 0.14) 46%,
-    rgba(74, 190, 232, 0.26) 50%,
-    rgba(110, 208, 244, 0.14) 54%,
-    rgba(0, 0, 0, 0) 58%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  animation: rhine-boot-sweep 0.85s cubic-bezier(0.3, 0, 0.2, 1) 1 both;
-}
-
-@keyframes rhine-boot-sweep {
-  from { transform: translateX(-80%); }
-  to { transform: translateX(80%); }
-}
-
-/* ── reading and focus chrome in lab cyan ────────────────────────────────── */
 body[data-rhine-lab-theme] ::selection {
-  background: rgba(74, 190, 232, 0.35);
-  color: rgb(13, 42, 58);
+  background: color-mix(in srgb, var(--dsw-alias-brand-primary) 36%, transparent);
+  color: var(--dsw-alias-label-primary);
 }
 
 body[data-rhine-lab-theme] :focus-visible {
-  outline: 2px solid rgba(74, 190, 232, 0.8);
-  outline-offset: 1px;
+  outline: 2px solid var(--dsw-alias-brand-primary);
+  outline-offset: 2px;
 }
 
-/* ── motion sensitivity ──────────────────────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  html[data-rhine-lab-theme]::before,
-  body[data-rhine-lab-theme]::after {
+/* Square three-column archive frame and technical drawing grid. */
+body[data-rhine-lab-theme] :has(> [data-shell-overlay]) {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(56px, 238px) minmax(0, 1fr) minmax(220px, 320px);
+  min-height: 100dvh;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--dsw-alias-bg-base);
+  background-image:
+    linear-gradient(var(--dsw-alias-border-l1) 1px, transparent 1px),
+    linear-gradient(90deg, var(--dsw-alias-border-l1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+body[data-rhine-lab-theme] :has(> [data-shell-overlay])::before {
+  content: "RL / ARCHIVE 00-17 · AUTHORIZED RESEARCH TERMINAL";
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 8px;
+  inset-inline-end: 14px;
+  color: var(--dsw-alias-label-tertiary);
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  pointer-events: none;
+}
+
+body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :first-child:not([data-shell-overlay]) {
+  position: relative;
+  border-inline-end: 1px solid var(--dsw-alias-label-primary);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--dsw-specific-sidebar-fill) 94%, transparent);
+  text-transform: uppercase;
+  letter-spacing: 0.055em;
+}
+
+body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :first-child:not([data-shell-overlay])::before {
+  content: "DEPARTMENT INDEX";
+  display: block;
+  padding: 11px 14px;
+  border-block-end: 1px solid var(--dsw-alias-border-l3);
+  color: var(--dsw-alias-label-tertiary);
+  font: 600 9px/1.2 "Cascadia Mono", Consolas, monospace;
+  letter-spacing: 0.16em;
+}
+
+body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :first-child:not([data-shell-overlay]) [aria-current="page"],
+body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :first-child:not([data-shell-overlay]) [data-active="true"] {
+  border-radius: 0;
+  box-shadow: inset 4px 0 0 var(--dsw-alias-brand-primary);
+  color: var(--dsw-alias-label-primary);
+}
+
+body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :nth-child(2):not([data-shell-overlay]) {
+  min-width: 0;
+  border-inline-end: 1px solid var(--dsw-alias-border-l3);
+  background: color-mix(in srgb, var(--dsw-alias-bg-layer-1) 92%, transparent);
+}
+
+body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :nth-child(3):not([data-shell-overlay]) {
+  min-width: 0;
+  border-inline-start: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 0;
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :nth-child(3):not([data-shell-overlay])::before {
+  content: "SPECIMEN / EXECUTION RECORD";
+  display: block;
+  padding: 12px 14px;
+  border-block-end: 1px solid var(--dsw-alias-label-primary);
+  color: var(--dsw-alias-label-secondary);
+  font: 600 9px/1.2 "Cascadia Mono", Consolas, monospace;
+  letter-spacing: 0.13em;
+}
+
+/* Research-log file header and flat conversation surface. */
+body[data-rhine-lab-theme] [data-phase] {
+  position: relative;
+  min-height: 58px;
+  padding-block: 18px 10px;
+  padding-inline: 26px;
+  border-block-end: 1px solid var(--dsw-alias-label-primary);
+  border-radius: 0;
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+body[data-rhine-lab-theme] [data-phase]::before {
+  content: "RL / CASE FILE";
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-start: 26px;
+  color: var(--dsw-alias-brand-text);
+  font: 700 8px/1 "Cascadia Mono", Consolas, monospace;
+  letter-spacing: 0.17em;
+}
+
+body[data-rhine-lab-theme] [data-phase]::after {
+  content: attr(data-phase);
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-end: 26px;
+  color: var(--dsw-alias-label-tertiary);
+  font: 600 8px/1 "Cascadia Mono", Consolas, monospace;
+  letter-spacing: 0.12em;
+}
+
+body[data-rhine-lab-theme] [data-conversation-scroll] {
+  border-radius: 0;
+  background: color-mix(in srgb, var(--dsw-alias-bg-base) 96%, transparent);
+}
+
+body[data-rhine-lab-theme] [data-chat-flow] {
+  position: relative;
+  counter-reset: rhine-record;
+  padding-block: 18px 32px;
+  padding-inline: clamp(18px, 3vw, 42px);
+  border-radius: 0;
+}
+
+body[data-rhine-lab-theme] [data-chat-flow]::before {
+  content: "";
+  position: absolute;
+  inset-block: 18px 32px;
+  inset-inline-start: clamp(32px, calc(3vw + 14px), 56px);
+  border-inline-start: 1px solid var(--dsw-alias-border-l3);
+  pointer-events: none;
+}
+
+body[data-rhine-lab-theme] [data-chat-flow-kind] {
+  position: relative;
+  counter-increment: rhine-record;
+  margin: 0;
+  padding: 22px 24px 22px 48px;
+  border: 0;
+  border-block-end: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--dsw-alias-bg-layer-1) 36%, transparent);
+}
+
+body[data-rhine-lab-theme] [data-chat-flow-kind]::before {
+  content: counter(rhine-record, decimal-leading-zero);
+  position: absolute;
+  inset-block-start: 22px;
+  inset-inline-start: 8px;
+  color: var(--dsw-alias-label-tertiary);
+  font: 700 9px/1 "Cascadia Mono", Consolas, monospace;
+  letter-spacing: 0.08em;
+}
+
+body[data-rhine-lab-theme] [data-chat-flow-kind*="user" i] {
+  border-inline-start: 3px solid var(--dsw-alias-brand-primary);
+}
+
+body[data-rhine-lab-theme] [data-chat-flow-kind*="assistant" i] {
+  border-inline-start: 3px solid var(--dsw-alias-label-primary);
+}
+
+body[data-rhine-lab-theme] [data-chat-flow-kind*="tool" i],
+body[data-rhine-lab-theme] [data-chat-flow-kind*="reason" i] {
+  border-inline-start: 3px solid var(--dsw-alias-feedback-positive);
+}
+
+/* Tool and reasoning executions become dark evidence cards in both modes. */
+body[data-rhine-lab-theme] [data-variant][data-state] {
+  position: relative;
+  border: 1px solid rgb(73, 84, 90);
+  border-radius: 0;
+  background: rgb(17, 21, 25);
+  color: rgb(231, 230, 223);
+  box-shadow: inset 3px 0 0 rgb(73, 84, 90);
+}
+
+body[data-rhine-lab-theme] [data-variant][data-state]::before {
+  content: attr(data-variant) " / " attr(data-state);
+  display: block;
+  padding: 7px 10px;
+  border-block-end: 1px solid rgb(73, 84, 90);
+  color: rgb(166, 181, 188);
+  font: 700 8px/1.2 "Cascadia Mono", Consolas, monospace;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+body[data-rhine-lab-theme] [data-variant][data-state="running"] {
+  border-color: var(--dsw-alias-feedback-positive);
+  box-shadow: inset 3px 0 0 var(--dsw-alias-feedback-positive);
+}
+
+body[data-rhine-lab-theme] [data-variant][data-state="running"]::after {
+  content: "LIVE";
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-end: 9px;
+  padding: 2px 5px;
+  border: 1px solid var(--dsw-alias-feedback-positive);
+  color: var(--dsw-alias-feedback-positive);
+  font: 700 8px/1 "Cascadia Mono", Consolas, monospace;
+  letter-spacing: 0.12em;
+  animation: rhine-data-seal 1.6s steps(2, end) infinite;
+}
+
+body[data-rhine-lab-theme] [data-variant][data-state="error"],
+body[data-rhine-lab-theme] [data-variant][data-state="failed"] {
+  border-color: var(--dsw-alias-state-error-primary);
+  box-shadow: inset 4px 0 0 var(--dsw-alias-state-error-primary);
+}
+
+/* Command composer. */
+body[data-rhine-lab-theme] [data-composer-card] {
+  position: relative;
+  margin-block: 14px 18px;
+  border: 1px solid var(--dsw-alias-label-primary);
+  border-radius: 2px;
+  background: var(--dsw-specific-input-major);
+  box-shadow: 5px 5px 0 color-mix(in srgb, var(--dsw-alias-brand-primary) 32%, transparent);
+}
+
+body[data-rhine-lab-theme] [data-composer-card]::before {
+  content: "CMD.DECK / SERIAL RL-017";
+  display: block;
+  padding: 6px 10px;
+  border-block-end: 1px solid var(--dsw-alias-border-l3);
+  color: var(--dsw-alias-label-tertiary);
+  font: 700 8px/1.2 "Cascadia Mono", Consolas, monospace;
+  letter-spacing: 0.14em;
+}
+
+body[data-rhine-lab-theme] [data-input-scroll] {
+  min-height: 42px;
+  padding-block: 10px;
+  padding-inline: 12px;
+  border-radius: 0;
+  background: transparent;
+}
+
+body[data-rhine-lab-theme] [data-composer-card] button[type="submit"],
+body[data-rhine-lab-theme] [data-composer-card] button[aria-label*="send" i] {
+  border: 1px solid var(--dsw-alias-label-primary);
+  border-radius: 0;
+  background: var(--dsw-alias-brand-primary);
+  color: rgb(9, 11, 13);
+  box-shadow: 2px 2px 0 var(--dsw-alias-label-primary);
+}
+
+/* Queue and approval records remain in document order and span their region. */
+body[data-rhine-lab-theme] [data-queue-dock] {
+  margin-block: 10px;
+  border: 1px solid var(--dsw-alias-border-l4);
+  border-inline-start: 4px solid var(--dsw-alias-feedback-positive);
+  border-radius: 0;
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+body[data-rhine-lab-theme] [data-queue-dock]::before {
+  content: "EXECUTION QUEUE";
+  display: block;
+  padding: 6px 10px;
+  border-block-end: 1px solid var(--dsw-alias-border-l2);
+  color: var(--dsw-alias-label-tertiary);
+  font: 700 8px/1.2 "Cascadia Mono", Consolas, monospace;
+  letter-spacing: 0.13em;
+}
+
+body[data-rhine-lab-theme] [data-approval-key] {
+  display: block;
+  margin-block: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--dsw-alias-border-l4);
+  border-inline-start: 4px solid var(--dsw-alias-brand-primary);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--dsw-alias-brand-primary) 8%, var(--dsw-alias-bg-layer-1));
+}
+
+body[data-rhine-lab-theme] [data-approval-key]::before {
+  content: "AUTHORIZATION " attr(data-approval-key);
+  display: block;
+  margin-block-end: 6px;
+  color: var(--dsw-alias-brand-text);
+  font: 700 8px/1.2 "Cascadia Mono", Consolas, monospace;
+  letter-spacing: 0.13em;
+}
+
+body[data-ds-dark-theme][data-rhine-lab-theme] [data-composer-card] {
+  box-shadow: 5px 5px 0 color-mix(in srgb, var(--dsw-alias-brand-primary) 44%, transparent);
+}
+
+body[data-ds-dark-theme][data-rhine-lab-theme] [data-phase],
+body[data-ds-dark-theme][data-rhine-lab-theme] [data-queue-dock] {
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+@keyframes rhine-data-seal {
+  0%,
+  48% {
+    opacity: 1;
+  }
+
+  49%,
+  100% {
+    opacity: 0.55;
+  }
+}
+
+@media (max-width: 900px) {
+  body[data-rhine-lab-theme] :has(> [data-shell-overlay]) {
+    grid-template-columns: minmax(48px, 208px) minmax(0, 1fr);
+  }
+
+  body[data-rhine-lab-theme] :has(> [data-shell-overlay])::before {
+    content: none;
+  }
+
+  body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :nth-child(3):not([data-shell-overlay]) {
     display: none;
+  }
+
+  body[data-rhine-lab-theme] [data-phase]::after {
+    content: none;
+  }
+}
+
+@media (max-width: 640px) {
+  body[data-rhine-lab-theme] [data-phase] {
+    min-height: 46px;
+    padding-block: 15px 8px;
+    padding-inline: 14px;
+  }
+
+  body[data-rhine-lab-theme] [data-phase]::before {
+    inset-inline-start: 14px;
+  }
+
+  body[data-rhine-lab-theme] [data-chat-flow] {
+    padding-block: 10px 22px;
+    padding-inline: 10px;
+  }
+
+  body[data-rhine-lab-theme] [data-chat-flow]::before {
+    inset-block: 10px 22px;
+    inset-inline-start: 27px;
+  }
+
+  body[data-rhine-lab-theme] [data-chat-flow-kind] {
+    padding: 16px 10px 16px 38px;
+  }
+
+  body[data-rhine-lab-theme] [data-chat-flow-kind]::before {
+    inset-block-start: 17px;
+    inset-inline-start: 5px;
+  }
+
+  body[data-rhine-lab-theme] [data-composer-card] {
+    margin-inline: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-rhine-lab-theme] [data-variant][data-state="running"]::after {
+    animation: none !important;
+  }
+
+  body[data-rhine-lab-theme] [data-composer-card],
+  body[data-rhine-lab-theme] [data-chat-flow-kind],
+  body[data-rhine-lab-theme] [data-queue-dock],
+  body[data-rhine-lab-theme] [data-approval-key] {
+    transition: none !important;
   }
 }
