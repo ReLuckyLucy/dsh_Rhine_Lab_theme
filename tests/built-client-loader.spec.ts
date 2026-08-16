@@ -43,6 +43,14 @@ const settingsSheet = settingsStyle?.sheet
 if (settingsSheet === null || settingsSheet === undefined) {
   throw new Error('Built client did not inject the settings-row stylesheet')
 }
+
+const hudStyle = Array.from(dom.window.document.querySelectorAll('style'))
+  .find(tag => tag.dataset.pluginCss?.endsWith('/RhineLabHud.module.css'))
+const hudSheet = hudStyle?.sheet
+if (hudSheet === null || hudSheet === undefined) {
+  throw new Error('Built client did not inject the HUD stylesheet')
+}
+
 function flattenRules(rules: CSSRuleList): CSSRule[] {
   return Array.from(rules).flatMap(rule => {
     if ('cssRules' in rule) return [rule, ...flattenRules(rule.cssRules as CSSRuleList)]
@@ -56,6 +64,10 @@ const builtMediaRules = builtRules.filter((rule): rule is CSSMediaRule => 'condi
 
 const builtSettingsRules = flattenRules(settingsSheet.cssRules)
   .filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
+const builtHudRules = flattenRules(hudSheet.cssRules)
+const builtHudStyleRules = builtHudRules.filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
+const builtHudMediaRules = builtHudRules.filter((rule): rule is CSSMediaRule => 'conditionText' in rule)
+
 afterAll(() => dom.window.close())
 
 describe('built Rhine Lab client loader', () => {
@@ -109,6 +121,47 @@ describe('built Rhine Lab client loader', () => {
     expect(chineseSend).toBeDefined()
   })
 })
+
+  it('keeps the fixed HUD plate outside Harness identity at wide and responsive widths', () => {
+    const root = builtHudStyleRules.find(rule =>
+      rule.style.getPropertyValue('position') === 'fixed'
+      && rule.style.getPropertyValue('pointer-events') === 'none',
+    )
+    const plate = builtHudStyleRules.find(rule =>
+      rule.style.getPropertyValue('grid-template-columns') === 'auto 1fr'
+      && rule.style.getPropertyValue('position') === 'absolute',
+    )
+    const responsive = builtHudMediaRules.find(rule =>
+      ['(max-width:1100px)', '(width<=1100px)'].includes(rule.conditionText.replace(/\s/g, '')),
+    )
+    const responsiveRules = responsive === undefined
+      ? []
+      : flattenRules(responsive.cssRules).filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
+
+    expect(root).toBeDefined()
+    expect(plate?.style.getPropertyValue('left')).toBe('560px')
+    expect(responsiveRules.some(rule =>
+      rule.selectorText.includes(plate?.selectorText ?? '__missing_plate__')
+      && rule.style.getPropertyValue('display') === 'none',
+    )).toBe(true)
+  })
+
+  it('reserves separate upper-right regions for archive copy and validation squares', () => {
+    const archive = builtStyleRules.find(rule =>
+      rule.style.getPropertyValue('content').includes('RL / ARCHIVE')
+      && rule.selectorText.endsWith(':before'),
+    )
+    const validation = builtHudStyleRules.find(rule =>
+      rule.style.getPropertyValue('display') === 'flex'
+      && rule.style.getPropertyValue('gap') === '4px'
+      && rule.style.getPropertyValue('position') === 'absolute',
+    )
+
+    expect(archive?.style.getPropertyValue('inset-inline-end')).toBe('64px')
+    expect(archive?.style.getPropertyValue('pointer-events')).toBe('none')
+    expect(validation?.style.getPropertyValue('right')).toBe('16px')
+    expect(validation?.style.getPropertyValue('top')).toBe('16px')
+  })
 
   it('injects square research-orange settings controls', () => {
     const segment = builtSettingsRules.find(rule =>

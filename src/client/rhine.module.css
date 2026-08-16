@@ -38,7 +38,7 @@ body[data-rhine-lab-theme] :has(> [data-shell-overlay])::before {
   position: absolute;
   z-index: 2;
   inset-block-start: 8px;
-  inset-inline-end: 14px;
+  inset-inline-end: 64px;
   color: var(--dsw-alias-label-tertiary);
   font-family: "Cascadia Mono", Consolas, monospace;
   font-size: 9px;
