@@ -24,6 +24,7 @@ import {
   DEFAULT_ENABLED, RHINE_ENABLED_FIELD, RHINE_SETTINGS_NAMESPACE,
   type RhineSettings,
 } from '../theme-settings.ts'
+import { createThemeProjector, SKIN_ATTRIBUTE } from './theme-projector.ts'
 import { RHINE_TOKENS } from './palette.ts'
 import './rhine.module.css'
 
@@ -37,9 +38,6 @@ export const SETTINGS_NS = 'settings.rhine-lab'
 
 /** Override-layer identity under ctx.theme.overrideTokens. */
 export const OVERRIDE_SOURCE = 'dsh-theme-rhine-lab'
-
-/** DOM attribute arming the decoration stylesheet, pinned on html and body. */
-export const SKIN_ATTRIBUTE = 'data-rhine-lab-theme'
 
 declare module '@deepseek-ai/dsh-client-ui-slots' {
   interface LocaleNamespaceMap {
@@ -59,21 +57,10 @@ export const inject = ['theme', 'settingsScope', 'slots', 'locale']
  */
 export function apply(ctx: ClientContext): void {
   const host = ctx.settingsScope.bind<RhineSettings>({ namespace: RHINE_SETTINGS_NAMESPACE })
-  let disposeOverride: (() => void) | undefined
-
-  /** Project one skin state onto the theme layer and the document. Idempotent. */
-  const project = (enabled: boolean): void => {
-    if (enabled) {
-      disposeOverride ??= ctx.theme.overrideTokens(OVERRIDE_SOURCE, RHINE_TOKENS)
-      document.documentElement.setAttribute(SKIN_ATTRIBUTE, '')
-      document.body.setAttribute(SKIN_ATTRIBUTE, '')
-    } else {
-      disposeOverride?.()
-      disposeOverride = undefined
-      document.documentElement.removeAttribute(SKIN_ATTRIBUTE)
-      document.body.removeAttribute(SKIN_ATTRIBUTE)
-    }
-  }
+  const projection = createThemeProjector(
+    () => ctx.theme.overrideTokens(OVERRIDE_SOURCE, RHINE_TOKENS),
+    document,
+  )
 
   const store = createRhineLabRowStore()
   let bound: BoundActions<typeof store> | undefined
@@ -83,7 +70,7 @@ export function apply(ctx: ClientContext): void {
   ctx.effect(() => {
     const read = (): void => {
       const next = readEnabled()
-      project(next)
+      projection.setEnabled(next)
       syncRow(next)
     }
     const off = host.subscribe(read)
@@ -91,7 +78,7 @@ export function apply(ctx: ClientContext): void {
     return () => {
       off()
       // Retract this plugin's layer and attribute with the fiber (HMR-safe).
-      project(false)
+      projection.dispose()
     }
   }, 'rhine-lab: settings adoption + skin projection')
 
@@ -105,7 +92,7 @@ export function apply(ctx: ClientContext): void {
     return {
       setEnabled: (next) => {
         void host.set(RHINE_ENABLED_FIELD, next)
-        project(next)
+        projection.setEnabled(next)
         syncRow(next)
       },
     }
