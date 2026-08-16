@@ -32,17 +32,20 @@ const mediaRules = rules.filter((rule): rule is CSSMediaRule => 'conditionText' 
 function rulesTargeting(anchor: string): CSSStyleRule[] {
   return styleRules.filter(rule => rule.selectorText.includes(anchor))
 }
+
 function isThemeScoped(selector: string): boolean {
   const subject = selector.trim().split(/\s/, 1)[0]
   return subject.startsWith('body') && subject.includes('[data-rhine-lab-theme]')
 }
 
-function hasMaxWidth(px: number): boolean {
-  const normalized = mediaRules.map(rule => rule.conditionText.replace(/\s/g, ''))
-  return normalized.includes('(max-width:' + px + 'px)')
-    || normalized.includes('(width<=' + px + 'px)')
+function mediaAtMaxWidth(px: number): CSSMediaRule {
+  const queries = ['(max-width:' + px + 'px)', '(width<=' + px + 'px)']
+  const rule = mediaRules.find(candidate =>
+    queries.includes(candidate.conditionText.replace(/\s/g, '')),
+  )
+  if (rule === undefined) throw new Error('Missing max-width ' + px + 'px media rule')
+  return rule
 }
-
 
 afterAll(() => style.remove())
 
@@ -56,6 +59,13 @@ describe('compiled Rhine Lab reconstruction stylesheet', () => {
     const matchingRules = rulesTargeting(anchor)
     expect(matchingRules.length).toBeGreaterThan(0)
     expect(matchingRules.every(rule =>
+      rule.selectorText.split(',').every(isThemeScoped),
+    )).toBe(true)
+  })
+
+  it('scopes every compiled global style selector to the enabled body theme', () => {
+    expect(styleRules.length).toBeGreaterThan(20)
+    expect(styleRules.every(rule =>
       rule.selectorText.split(',').every(isThemeScoped),
     )).toBe(true)
   })
@@ -82,9 +92,60 @@ describe('compiled Rhine Lab reconstruction stylesheet', () => {
     expect(darkComposer).toBeDefined()
   })
 
-  it('compiles desktop, mobile, and reduced-motion adaptation rules', () => {
-    expect(hasMaxWidth(900)).toBe(true)
-    expect(hasMaxWidth(640)).toBe(true)
+  it('removes only inscriptions and metadata at 900px without replacing Harness tracks', () => {
+    const responsiveRules = flattenRules(mediaAtMaxWidth(900).cssRules)
+      .filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
+
+    const frameInscription = responsiveRules.find(rule =>
+      rule.selectorText.includes(':has(>[data-shell-overlay])')
+      && rule.selectorText.includes(':before'),
+    )
+    const phaseMetadata = responsiveRules.find(rule =>
+      rule.selectorText.includes('[data-phase]') && rule.selectorText.includes(':after'),
+    )
+    expect(frameInscription?.style.getPropertyValue('content')).toBe('none')
+    expect(phaseMetadata?.style.getPropertyValue('content')).toBe('none')
+    expect(responsiveRules.some(rule =>
+      rule.style.getPropertyValue('grid-template-columns') !== '',
+    )).toBe(false)
+    expect(responsiveRules.some(rule =>
+      rule.selectorText.includes(':nth-child(3)')
+      && rule.style.getPropertyValue('display') === 'none',
+    )).toBe(false)
+  })
+
+  it('reduces only file-header and record gutters at 640px', () => {
+    const mobileRules = flattenRules(mediaAtMaxWidth(640).cssRules)
+      .filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
+    const phase = mobileRules.find(rule => rule.selectorText.endsWith('[data-phase]'))
+    const record = mobileRules.find(rule => rule.selectorText.endsWith('[data-chat-flow-kind]'))
+
+    expect(phase?.style.getPropertyValue('min-height')).toBe('46px')
+    expect(phase?.style.getPropertyValue('padding-inline')).toBe('14px')
+    expect(record?.style.getPropertyValue('padding')).toBe('16px 10px 16px 38px')
+    expect(mobileRules.some(rule =>
+      rule.style.getPropertyValue('grid-template-columns') !== '',
+    )).toBe(false)
+  })
+
+  it('makes every absolute decorative pseudo input-transparent', () => {
+    const absolutePseudos = styleRules.filter(rule =>
+      /:(?:before|after)$/.test(rule.selectorText)
+      && rule.style.getPropertyValue('position') === 'absolute',
+    )
+    expect(absolutePseudos.length).toBeGreaterThanOrEqual(4)
+    expect(absolutePseudos.every(rule =>
+      rule.style.getPropertyValue('pointer-events') === 'none',
+    )).toBe(true)
+  })
+
+  it('stops the running seal under reduced motion', () => {
+    const runningSeal = styleRules.find(rule =>
+      rule.selectorText.includes('[data-state=running]')
+      && rule.selectorText.endsWith(':after')
+      && rule.style.getPropertyValue('animation') !== '',
+    )
+    expect(runningSeal?.style.getPropertyValue('pointer-events')).toBe('none')
 
     const reducedMotion = mediaRules.find(rule =>
       rule.conditionText.replace(/\s/g, '').includes('prefers-reduced-motion:reduce'),
@@ -92,6 +153,41 @@ describe('compiled Rhine Lab reconstruction stylesheet', () => {
     expect(reducedMotion).toBeDefined()
     const reducedRules = flattenRules(reducedMotion!.cssRules)
       .filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
-    expect(reducedRules.some(rule => rule.style.getPropertyValue('animation') === 'none')).toBe(true)
+    expect(reducedRules.some(rule =>
+      rule.selectorText.includes('[data-state=running]')
+      && rule.selectorText.endsWith(':after')
+      && rule.style.getPropertyValue('animation') === 'none',
+    )).toBe(true)
+  })
+
+  it('does not compile fullscreen scan, boot, or vignette layers', () => {
+    const fullscreenRootPseudos = styleRules.filter(rule =>
+      /^(?:html|body)(?:\[[^\]]+\])*:(?:before|after)$/.test(rule.selectorText)
+      && rule.style.getPropertyValue('position') === 'fixed',
+    )
+    const animatedRootPseudos = styleRules.filter(rule =>
+      /^(?:html|body)(?:\[[^\]]+\])*:(?:before|after)$/.test(rule.selectorText)
+      && rule.style.getPropertyValue('animation') !== '',
+    )
+    const vignetteRootPseudos = styleRules.filter(rule =>
+      /^(?:html|body)(?:\[[^\]]+\])*:(?:before|after)$/.test(rule.selectorText)
+      && rule.style.getPropertyValue('background').includes('radial-gradient'),
+    )
+    expect(fullscreenRootPseudos).toEqual([])
+    expect(animatedRootPseudos).toEqual([])
+    expect(vignetteRootPseudos).toEqual([])
+  })
+
+  it('does not override code, terminal, or diff overflow behavior', () => {
+    const forbiddenProperties = ['white-space', 'overflow-x', 'width', 'min-width', 'max-width']
+    const codeSurfaceRules = styleRules.filter(rule =>
+      /(^|[\s>+~,:])(pre|code)(?=$|[.:[\s>+~])|terminal|diff/i.test(rule.selectorText),
+    )
+    const forbiddenDeclarations = codeSurfaceRules.flatMap(rule =>
+      forbiddenProperties
+        .filter(property => rule.style.getPropertyValue(property) !== '')
+        .map(property => rule.selectorText + ' { ' + property + ' }'),
+    )
+    expect(forbiddenDeclarations).toEqual([])
   })
 })

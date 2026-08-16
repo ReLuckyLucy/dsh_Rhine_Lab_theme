@@ -82,7 +82,7 @@ export const RHINE_TOKENS: ThemeTokenOverrides = {
   '--dsw-alias-label-dimmed': { light: 'rgb(184, 181, 173)', dark: 'rgb(76, 86, 91)' },
   '--dsw-alias-label-primary-bluish': { light: 'rgb(20, 54, 62)', dark: OFF_WHITE },
   '--dsw-alias-label-primary-dimmed': { light: 'rgb(55, 57, 57)', dark: 'rgb(199, 201, 196)' },
-  '--dsw-alias-label-primary-foreground': { light: OFF_WHITE, dark: NIGHT },
+  '--dsw-alias-label-primary-foreground': { light: INK, dark: NIGHT },
   '--dsw-alias-label-primary-inverted': { light: OFF_WHITE, dark: NIGHT },
   '--dsw-alias-label-primary': { light: INK, dark: OFF_WHITE },
   '--dsw-alias-label-secondary': { light: 'rgb(69, 69, 66)', dark: 'rgb(181, 185, 181)' },

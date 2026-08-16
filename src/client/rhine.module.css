@@ -110,6 +110,7 @@ body[data-rhine-lab-theme] [data-phase] {
 body[data-rhine-lab-theme] [data-phase]::before {
   content: "RL / CASE FILE";
   position: absolute;
+  pointer-events: none;
   inset-block-start: 6px;
   inset-inline-start: 26px;
   color: var(--dsw-alias-brand-text);
@@ -120,6 +121,7 @@ body[data-rhine-lab-theme] [data-phase]::before {
 body[data-rhine-lab-theme] [data-phase]::after {
   content: attr(data-phase);
   position: absolute;
+  pointer-events: none;
   inset-block-start: 6px;
   inset-inline-end: 26px;
   color: var(--dsw-alias-label-tertiary);
@@ -163,6 +165,7 @@ body[data-rhine-lab-theme] [data-chat-flow-kind] {
 body[data-rhine-lab-theme] [data-chat-flow-kind]::before {
   content: counter(rhine-record, decimal-leading-zero);
   position: absolute;
+  pointer-events: none;
   inset-block-start: 22px;
   inset-inline-start: 8px;
   color: var(--dsw-alias-label-tertiary);
@@ -212,6 +215,7 @@ body[data-rhine-lab-theme] [data-variant][data-state="running"] {
 body[data-rhine-lab-theme] [data-variant][data-state="running"]::after {
   content: "LIVE";
   position: absolute;
+  pointer-events: none;
   inset-block-start: 6px;
   inset-inline-end: 9px;
   padding: 2px 5px;
@@ -325,16 +329,8 @@ body[data-ds-dark-theme][data-rhine-lab-theme] [data-queue-dock] {
 }
 
 @media (max-width: 900px) {
-  body[data-rhine-lab-theme] :has(> [data-shell-overlay]) {
-    grid-template-columns: minmax(48px, 208px) minmax(0, 1fr);
-  }
-
   body[data-rhine-lab-theme] :has(> [data-shell-overlay])::before {
     content: none;
-  }
-
-  body[data-rhine-lab-theme] :has(> [data-shell-overlay]) > :nth-child(3):not([data-shell-overlay]) {
-    display: none;
   }
 
   body[data-rhine-lab-theme] [data-phase]::after {
