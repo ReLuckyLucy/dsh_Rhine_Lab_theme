@@ -5,11 +5,13 @@ import { RhineLabHud } from '../src/client/RhineLabHud.tsx'
 import { registerRhineLabHud } from '../src/client/hud-registration.ts'
 
 describe('RhineLabHud', () => {
-  it('renders restrained decorative branding without controls', () => {
+  it('omits the upper brand plate that can cover Harness session titles', () => {
     const { container } = render(<RhineLabHud />)
     expect(container.firstElementChild?.getAttribute('aria-hidden')).toBe('true')
-    expect(screen.getByText('RHINE LAB LLC.')).toBeTruthy()
-    expect(screen.getByText('SYNTHESIZE INFORMATION ANALYSIS OS')).toBeTruthy()
+    expect(screen.queryByText('RHINE LAB LLC.')).toBeNull()
+    expect(screen.queryByText('SYNTHESIZE INFORMATION ANALYSIS OS')).toBeNull()
+    expect(screen.queryByText('+')).toBeNull()
+    expect(screen.queryByText('−')).toBeNull()
     expect(container.querySelector('button, input, textarea, a')).toBeNull()
   })
 

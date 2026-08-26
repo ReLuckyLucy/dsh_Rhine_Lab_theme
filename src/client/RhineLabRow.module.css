@@ -1,97 +1,96 @@
-/* The Rhine Lab skin row: a research-orange authorization seal and square
-   toggle. It consumes only --dsw-* tokens, preserving the host palettes and
-   the existing durable settings behavior. */
+/* Rhine Lab preference row aligned with Harness General-settings chrome.
+   The durable behavior stays feature-owned while presentation uses only
+   host semantic tokens. */
 
 .group {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--dsw-alias-border-l2);
 }
 
 .head {
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.badge {
-  flex: none;
-  width: 22px;
-  height: 22px;
-  background: var(--dsw-alias-interactive-bg-hover);
-  border: 1px solid var(--dsw-alias-border-l3);
-  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
-  transition: background var(--ds-transition-duration) var(--ds-ease-in-out);
-}
-
-.badge[data-on] {
-  background: var(--dsw-alias-brand-primary);
-  border-color: transparent;
-  box-shadow:
-    0 0 0 2px var(--dsw-alias-bg-layer-1),
-    0 0 10px 1px color-mix(in srgb, var(--dsw-alias-brand-primary) 55%, transparent);
-  animation: rhine-seal-pulse 2.4s ease-in-out infinite;
-}
-
-@keyframes rhine-seal-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.72; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .badge[data-on] {
-    animation: none;
-  }
 }
 
 .copy {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
+  padding-right: 48px;
 }
 
 .title {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
   color: var(--dsw-alias-label-primary);
-  font: var(--dsw-font-base-strong-16);
 }
 
 .desc {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
   color: var(--dsw-alias-label-tertiary);
-  font: var(--dsw-font-xs-13);
 }
 
 .seg {
+  flex: none;
   display: inline-flex;
-  gap: 6px;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 18px;
+  background: var(--dsw-alias-bg-module-platform);
 }
 
 .segBtn {
-  padding: 5px 14px;
-  border-radius: 0;
-  border: 1px solid var(--dsw-alias-border-l2);
-  background: var(--dsw-alias-button-elevated-fill);
+  height: 32px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 16px;
+  background: transparent;
   color: var(--dsw-alias-label-secondary);
-  font: var(--dsw-font-s-strong-14);
+  font: inherit;
+  font-size: 14px;
+  line-height: 22px;
   cursor: pointer;
   transition:
     background var(--ds-transition-duration-fast) var(--ds-ease-in-out),
-    color var(--ds-transition-duration-fast) var(--ds-ease-in-out),
-    border-color var(--ds-transition-duration-fast) var(--ds-ease-in-out);
+    color var(--ds-transition-duration-fast) var(--ds-ease-in-out);
 }
 
-.segBtn:hover {
-  background: var(--dsw-alias-button-floating-hover);
+.segBtn:hover:not(.segOn) {
+  background: var(--dsw-alias-interactive-bg-hover);
   color: var(--dsw-alias-label-primary);
 }
 
 .segOn {
-  background: var(--dsw-alias-brand-primary);
-  border-color: transparent;
-  color: var(--dsw-alias-label-primary-foreground);
+  background: var(--dsw-alias-button-elevated-fill);
+  color: var(--dsw-alias-label-primary);
 }
 
 .segOn:hover {
-  background: var(--dsw-alias-button-primary-hover);
-  color: var(--dsw-alias-label-primary-foreground);
+  background: var(--dsw-alias-button-floating-hover);
+  color: var(--dsw-alias-label-primary);
+}
+
+@media (max-width: 640px) {
+  .group {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .copy {
+    padding-right: 0;
+  }
+
+  .seg {
+    align-self: flex-start;
+  }
 }

@@ -1,6 +1,6 @@
 /**
  * Rhine Lab skin row registered into the General section item slot: a title
- * with the lab-seal indicator, a description line, and an on/off pair.
+ * with a description line and a Harness-style authorization pill.
  * Selection reads the store mirror; the face write flips the durable
  * preference and the live skin together.
  */
@@ -37,7 +37,6 @@ export function RhineLabRow({ t, setEnabled, useStore }: RhineLabRowComponentPro
   return (
     <div className={css.group}>
       <div className={css.head}>
-        <span className={css.badge} data-on={enabled || undefined} aria-hidden="true" />
         <div className={css.copy}>
           <div className={css.title}>{t('rhine.title')}</div>
           <div className={css.desc}>{t('rhine.desc')}</div>
