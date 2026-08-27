@@ -31,20 +31,20 @@
 ```sh
 dsh plugin --profile web add dsh-theme-rhine-lab
 pnpm pack
-dsh plugin --profile web add ./dsh-theme-rhine-lab-0.2.0.tgz
+dsh plugin --profile web add ./dsh-theme-rhine-lab-0.2.1.tgz
 ```
 
 从源码安装前先构建：
 
 ```sh
-git clone https://github.com/ReLuckyLucy/dsh_Rhine_Lab_themo.git
-cd dsh_Rhine_Lab_themo
+git clone https://github.com/ReLuckyLucy/dsh_Rhine_Lab_theme.git
+cd dsh_Rhine_Lab_theme
 pnpm install
 pnpm build
 dsh plugin --profile web add .
 ```
 
-安装插件集合后重启 `dsh web`，再刷新浏览器。Git/源码安装可能要求在目标 profile 中允许本包的 `prepare` 构建；只应允许你信任的源码。
+安装插件集合后重启 `dsh web`，再刷新浏览器。Git 安装会直接使用已提交的 `lib/` 产物，不需要在目标 profile 中放行生命周期脚本；生成 tarball 前，`prepack` 会重新构建这些产物。
 
 ## 工作原理
 
