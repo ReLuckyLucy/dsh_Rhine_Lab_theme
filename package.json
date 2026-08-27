@@ -1,6 +1,6 @@
 {
   "name": "dsh-theme-rhine-lab",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Arknights Rhine Lab archive-terminal reconstruction for the DeepSeek Harness Web GUI, with reversible deep styling and restrained institutional HUD",
   "type": "module",
   "main": "lib/index.js",
@@ -23,7 +23,7 @@
     "build": "tsdown",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prepare": "tsdown"
+    "prepack": "tsdown"
   },
   "keywords": [
     "dsh",

@@ -31,20 +31,20 @@ Install a published package or a packed tarball:
 ```sh
 dsh plugin --profile web add dsh-theme-rhine-lab
 pnpm pack
-dsh plugin --profile web add ./dsh-theme-rhine-lab-0.2.0.tgz
+dsh plugin --profile web add ./dsh-theme-rhine-lab-0.2.1.tgz
 ```
 
 Install from source after building it:
 
 ```sh
-git clone https://github.com/ReLuckyLucy/dsh_Rhine_Lab_themo.git
-cd dsh_Rhine_Lab_themo
+git clone https://github.com/ReLuckyLucy/dsh_Rhine_Lab_theme.git
+cd dsh_Rhine_Lab_theme
 pnpm install
 pnpm build
 dsh plugin --profile web add .
 ```
 
-Restart `dsh web` after changing the installed plugin set, then refresh the browser. Git/source installs may require allowing this package’s `prepare` build in the target profile; allow it only when you trust the source.
+Restart `dsh web` after changing the installed plugin set, then refresh the browser. Git installs use the committed `lib/` artifacts and do not require lifecycle-script approval; `prepack` rebuilds those artifacts before a tarball is produced.
 
 ## How it works
 
