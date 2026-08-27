@@ -64,6 +64,8 @@ const builtMediaRules = builtRules.filter((rule): rule is CSSMediaRule => 'condi
 
 const builtSettingsRules = flattenRules(settingsSheet.cssRules)
   .filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
+const builtSettingsMediaRules = flattenRules(settingsSheet.cssRules)
+  .filter((rule): rule is CSSMediaRule => 'conditionText' in rule)
 const builtHudRules = flattenRules(hudSheet.cssRules)
 const builtHudStyleRules = builtHudRules.filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
 const builtHudMediaRules = builtHudRules.filter((rule): rule is CSSMediaRule => 'conditionText' in rule)
@@ -152,28 +154,12 @@ it('hides the built department index label after Harness collapses the sidebar r
   expect(departmentIndex?.style.getPropertyValue('display')).toBe('none')
 })
 
-  it('keeps the fixed HUD plate outside Harness identity at wide and responsive widths', () => {
-    const root = builtHudStyleRules.find(rule =>
-      rule.style.getPropertyValue('position') === 'fixed'
-      && rule.style.getPropertyValue('pointer-events') === 'none',
-    )
+  it('does not inject the removed upper brand plate', () => {
     const plate = builtHudStyleRules.find(rule =>
       rule.style.getPropertyValue('grid-template-columns') === 'auto 1fr'
       && rule.style.getPropertyValue('position') === 'absolute',
     )
-    const responsive = builtHudMediaRules.find(rule =>
-      ['(max-width:1100px)', '(width<=1100px)'].includes(rule.conditionText.replace(/\s/g, '')),
-    )
-    const responsiveRules = responsive === undefined
-      ? []
-      : flattenRules(responsive.cssRules).filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
-
-    expect(root).toBeDefined()
-    expect(plate?.style.getPropertyValue('left')).toBe('560px')
-    expect(responsiveRules.some(rule =>
-      rule.selectorText.includes(plate?.selectorText ?? '__missing_plate__')
-      && rule.style.getPropertyValue('display') === 'none',
-    )).toBe(true)
+    expect(plate === undefined).toBe(true)
   })
 
   it('reserves separate upper-right regions for archive copy and validation squares', () => {
@@ -193,20 +179,42 @@ it('hides the built department index label after Harness collapses the sidebar r
     expect(validation?.style.getPropertyValue('top')).toBe('16px')
   })
 
-  it('injects square research-orange settings controls', () => {
+  it('injects a Harness-style neutral pill settings control', () => {
     const segment = builtSettingsRules.find(rule =>
-      rule.style.getPropertyValue('padding') === '5px 14px',
+      rule.style.getPropertyValue('display') === 'inline-flex'
+      && rule.style.getPropertyValue('background') === 'var(--dsw-alias-bg-module-platform)',
     )
     const selectedSegment = builtSettingsRules.find(rule =>
-      rule.style.getPropertyValue('background') === 'var(--dsw-alias-brand-primary)'
-      && rule.style.getPropertyValue('color') === 'var(--dsw-alias-label-primary-foreground)',
-    )
-    const enabledSeal = builtSettingsRules.find(rule =>
-      rule.selectorText.includes('[data-on]')
-      && rule.style.getPropertyValue('animation') !== '',
+      rule.style.getPropertyValue('background') === 'var(--dsw-alias-button-elevated-fill)'
+      && rule.style.getPropertyValue('color') === 'var(--dsw-alias-label-primary)',
     )
 
-    expect(segment?.style.getPropertyValue('border-radius')).toMatch(/^0(?:px)?$/)
+    expect(segment?.style.getPropertyValue('border-radius')).toBe('18px')
     expect(selectedSegment).toBeDefined()
-    expect(enabledSeal?.style.getPropertyValue('box-shadow')).toContain('var(--dsw-alias-brand-primary)')
+    expect(builtSettingsRules.some(rule =>
+      rule.style.getPropertyValue('background') === 'var(--dsw-alias-brand-primary)',
+    )).toBe(false)
+    expect(builtSettingsRules.some(rule =>
+      rule.selectorText.includes('[data-on]') && rule.style.getPropertyValue('animation') !== '',
+    )).toBe(false)
+  })
+
+  it('stacks the theme copy above its control in narrow settings panels', () => {
+    const responsive = builtSettingsMediaRules.find(rule =>
+      ['(max-width:640px)', '(width<=640px)']
+        .includes(rule.conditionText.replace(/\s/g, '')),
+    )
+    const responsiveRules = responsive === undefined
+      ? []
+      : flattenRules(responsive.cssRules)
+          .filter((rule): rule is CSSStyleRule => 'selectorText' in rule)
+    const group = responsiveRules.find(rule =>
+      rule.style.getPropertyValue('flex-direction') === 'column',
+    )
+    const copy = responsiveRules.find(rule =>
+      rule.style.getPropertyValue('padding-right') === '0px',
+    )
+
+    expect(group?.style.getPropertyValue('align-items')).toBe('stretch')
+    expect(copy).toBeDefined()
   })
